@@ -73,12 +73,9 @@ export function MessageInput({ onSend, channelName, disabled }: MessageInputProp
       return null;
     }
 
-    const { data: urlData } = supabase.storage
-      .from('chat-attachments')
-      .getPublicUrl(path);
-
+    // Store the path, not a public URL (bucket is private)
     return {
-      url: urlData.publicUrl,
+      url: path,
       name: file.name,
       type: file.type,
     };
