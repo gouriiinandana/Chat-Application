@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Message } from '@/hooks/useMessages';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { format, isToday, isYesterday } from 'date-fns';
+import { FileText, Download } from 'lucide-react';
 
 interface MessageListProps {
   messages: Message[];
@@ -89,9 +90,37 @@ export function MessageList({ messages, loading, currentUserId }: MessageListPro
                       </span>
                     </div>
                   )}
-                  <p className="text-foreground text-sm leading-relaxed break-words">
-                    {message.content}
-                  </p>
+                  {message.content && (
+                    <p className="text-foreground text-sm leading-relaxed break-words">
+                      {message.content}
+                    </p>
+                  )}
+                  {message.file_url && (
+                    <div className="mt-1">
+                      {message.file_type?.startsWith('image/') ? (
+                        <a href={message.file_url} target="_blank" rel="noopener noreferrer">
+                          <img
+                            src={message.file_url}
+                            alt={message.file_name || 'image'}
+                            className="max-w-xs max-h-64 rounded-lg object-cover border border-border hover:opacity-90 transition-opacity"
+                          />
+                        </a>
+                      ) : (
+                        <a
+                          href={message.file_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-secondary rounded-lg px-3 py-2 hover:bg-accent transition-colors"
+                        >
+                          <FileText className="w-5 h-5 text-primary shrink-0" />
+                          <span className="text-sm text-foreground truncate max-w-[200px]">
+                            {message.file_name || 'File'}
+                          </span>
+                          <Download className="w-4 h-4 text-muted-foreground shrink-0" />
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
