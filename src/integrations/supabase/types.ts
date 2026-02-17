@@ -46,6 +46,9 @@ export type Database = {
           channel_id: string
           content: string
           created_at: string
+          file_name: string | null
+          file_type: string | null
+          file_url: string | null
           id: string
           updated_at: string
           user_id: string
@@ -54,6 +57,9 @@ export type Database = {
           channel_id: string
           content: string
           created_at?: string
+          file_name?: string | null
+          file_type?: string | null
+          file_url?: string | null
           id?: string
           updated_at?: string
           user_id: string
@@ -62,6 +68,9 @@ export type Database = {
           channel_id?: string
           content?: string
           created_at?: string
+          file_name?: string | null
+          file_type?: string | null
+          file_url?: string | null
           id?: string
           updated_at?: string
           user_id?: string

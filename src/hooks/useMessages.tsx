@@ -8,6 +8,9 @@ export interface Message {
   user_id: string;
   content: string;
   created_at: string;
+  file_url?: string | null;
+  file_name?: string | null;
+  file_type?: string | null;
   profile?: {
     username: string;
     avatar_url: string | null;
@@ -62,7 +65,6 @@ export function useMessages(channelId: string | null) {
           filter: `channel_id=eq.${channelId}`,
         },
         async (payload) => {
-          // Fetch the profile for the new message
           const { data: profile } = await supabase
             .from('profiles')
             .select('username, avatar_url')
@@ -83,13 +85,16 @@ export function useMessages(channelId: string | null) {
     };
   }, [channelId]);
 
-  const sendMessage = async (content: string) => {
-    if (!user || !channelId || !content.trim()) return;
+  const sendMessage = async (content: string, file?: { url: string; name: string; type: string }) => {
+    if (!user || !channelId || (!content.trim() && !file)) return;
 
     const { error } = await supabase.from('messages').insert({
       channel_id: channelId,
       user_id: user.id,
       content: content.trim(),
+      file_url: file?.url || null,
+      file_name: file?.name || null,
+      file_type: file?.type || null,
     });
 
     if (error) {
